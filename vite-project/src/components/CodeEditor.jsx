@@ -5,9 +5,10 @@ import { Button, ButtonGroup } from "@chakra-ui/react";
 import { LangVersion } from "../API/LangVersion";
 import { LangContext } from "../context/LangContextProvider";
 import { CodeOutput } from "../API/CodeOuput";
+import axios from "axios";
 const CodeEditor = () => {
-  const [value, setValue] = useState("");
-
+  const [code, setCode] = useState("");
+  const [output, setOutput] = useState("");
   const editorRef = useRef();
   const { lang } = useContext(LangContext);
 
@@ -18,12 +19,15 @@ const CodeEditor = () => {
   };
 
   const handleCodeSubmit = async () => {
-    // let term = new Terminal();
-    // term.open(document.getElementById("terminal"));
-    // term.write("Hello  ");
+    //
     // LangVersion();
     try {
-      const {} = await CodeOutput({ lang, value });
+      const { run } = await CodeOutput(lang, code);
+      console.log(run.output);
+      setOutput(run.output);
+      // let term = new Terminal();
+      // term.open(document.getElementById("terminal"));
+      // term.write(`${output ? output : "No output"}`);
     } catch (error) {
       console.log(error);
     }
@@ -36,11 +40,9 @@ const CodeEditor = () => {
         <Editor
           height="75vh"
           defaultLanguage={lang === "" ? "Javascript" : lang}
-          // defaultValue={`//coding in ${lang}`}
-          value={value}
+          value={code}
           onChange={(e) => {
-            setValue(e);
-            // console.log(e);
+            setCode(e);
           }}
           onMount={handleEventDidMount}
         />
@@ -48,6 +50,7 @@ const CodeEditor = () => {
       <Button colorScheme="whatsapp" onClick={handleCodeSubmit}>
         Submit
       </Button>
+      <div>{output ? output : "no output"}</div>
       <div id="terminal"></div>
     </>
   );

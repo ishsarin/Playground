@@ -1,24 +1,26 @@
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: "https://emkc.org/api/v2/piston",
-});
+// const API = axios.create({
+//   baseURL: "https://emkc.org/api/v2",
+// });
 
-export const CodeOutput = async ({ lang, value }) => {
+export const CodeOutput = async (lang, code) => {
+  const API = axios.create({
+    baseURL: "https://emkc.org/api/v2/piston",
+  });
   const req = await API.post(
     "/execute",
     {
-      language: lang,
-      // version: "15.10.0",
+      language: "javascript",
+      version: "1.32.3",
       files: [
         {
-          // name: "my_cool_code.js",
-          // content: "console.log(process.argv)",
-          content: value,
+          content: code,
         },
       ],
     },
     {
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
