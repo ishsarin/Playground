@@ -1,14 +1,23 @@
-import React, { useState, useRef, useContext } from "react";
-import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
+import React, { useState, useRef, useContext, useEffect } from "react";
+import Editor from "@monaco-editor/react";
 import { Box } from "@chakra-ui/react";
-import { Button, ButtonGroup } from "@chakra-ui/react";
-import { LangVersion } from "../API/LangVersion";
+import { Center } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { LangContext } from "../context/LangContextProvider";
 import { CodeOutput } from "../API/CodeOuput";
-import axios from "axios";
+import { LangVersion } from "../API/LangVersion";
+import Terminal from "./Terminal";
+
 const CodeEditor = () => {
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
+  const [language, setLanguage] = useState([{}]);
+
+  const [langver, setLangVer] = useState({
+    // lang: "",
+    // ver: "",
+  });
+
   const editorRef = useRef();
   const { lang } = useContext(LangContext);
 
@@ -18,16 +27,27 @@ const CodeEditor = () => {
     // console.log(lang);
   };
 
+  useEffect(() => {
+    async function fetchLangVersion() {
+      const res = await LangVersion();
+      // console.log(res);
+      setLanguage(res);
+    }
+    fetchLangVersion();
+  }, []);
+
+  const handleLangVersionSelected = (e) => {
+    // console.log(JSON.parse(e.target.value));
+    const singleObj = JSON.parse(e.target.value);
+    setLangVer(singleObj);
+  };
+
   const handleCodeSubmit = async () => {
-    //
-    // LangVersion();
+    // console.log(langver);
     try {
-      const { run } = await CodeOutput(lang, code);
+      const { run } = await CodeOutput(langver, code);
       console.log(run.output);
       setOutput(run.output);
-      // let term = new Terminal();
-      // term.open(document.getElementById("terminal"));
-      // term.write(`${output ? output : "No output"}`);
     } catch (error) {
       console.log(error);
     }
@@ -35,10 +55,30 @@ const CodeEditor = () => {
 
   return (
     <>
+      <Center>
+        <Button colorScheme="whatsapp" onClick={handleCodeSubmit}>
+          Run
+        </Button>
+      </Center>
       <Box>
-        <button disabled={true}>{lang === "" ? "Javascript" : lang}</button>
+        <select
+          name="language"
+          id="select_lang"
+          defaultValue="javascript 1.32.3"
+          onChange={handleLangVersionSelected}
+        >
+          {/* <option value="javascript 1.32.3">javascript {""} 1.32.3</option> */}
+          {language.map((lang, index) => (
+            <option
+              value={JSON.stringify({ lang: lang.language, ver: lang.version })}
+              key={index}
+            >
+              {lang.language} {lang.version}
+            </option>
+          ))}
+        </select>
         <Editor
-          height="75vh"
+          height={`${75}vh`}
           defaultLanguage={lang === "" ? "Javascript" : lang}
           value={code}
           onChange={(e) => {
@@ -47,11 +87,8 @@ const CodeEditor = () => {
           onMount={handleEventDidMount}
         />
       </Box>
-      <Button colorScheme="whatsapp" onClick={handleCodeSubmit}>
-        Submit
-      </Button>
-      <div>{output ? output : "no output"}</div>
-      <div id="terminal"></div>
+
+      <Terminal output={output} />
     </>
   );
 };

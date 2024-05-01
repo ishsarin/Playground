@@ -11,8 +11,10 @@ export const CodeOutput = async (lang, code) => {
   const req = await API.post(
     "/execute",
     {
-      language: "javascript",
-      version: "1.32.3",
+      // language: "javascript",
+      language: lang.lang,
+      // version: "1.32.3",
+      version: lang.ver,
       files: [
         {
           content: code,
