@@ -1,4 +1,31 @@
-.terminal-box:hover {
-  border-top: 4px solid blue;
-  cursor: n-resize;
+// .terminal-box:hover {
+//   // border-top: 4px solid blue;
+//   // cursor: n-resize;
+//   resize: vertical;
+//   overflow: auto;
+// }
+.resizable {
+  width: 100%;
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  font-family: sans-serif;
+  overflow: hidden;
+  touch-action: none;
+
+  /* This makes things *much* easier */
+  box-sizing: border-box;
+}
+.homepage {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center;
+  align-items: center;
+}
+.lang-btn {
+  background-color: white;
+  color: black;
+}
+.lang-btn:hover {
+  border: 2px solid blue;
 }
