@@ -64,10 +64,11 @@ const CodeEditor = () => {
         <select
           name="language"
           id="select_lang"
-          defaultValue="javascript 1.32.3"
+          defaultValue={lang}
           onChange={handleLangVersionSelected}
         >
-          {/* <option value="javascript 1.32.3">javascript {""} 1.32.3</option> */}
+          <option value="">{lang}</option>
+
           {language.map((lang, index) => (
             <option
               value={JSON.stringify({ lang: lang.language, ver: lang.version })}
@@ -78,7 +79,7 @@ const CodeEditor = () => {
           ))}
         </select>
         <Editor
-          height={`${75}vh`}
+          height="65vh"
           defaultLanguage={lang === "" ? "Javascript" : lang}
           value={code}
           onChange={(e) => {
