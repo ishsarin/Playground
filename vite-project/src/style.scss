@@ -4,6 +4,13 @@
 //   resize: vertical;
 //   overflow: auto;
 // }
+
+#select_lang {
+  background-color: #9ae6b4;
+  color: black;
+  padding: 5px;
+}
+
 .resizable {
   width: 100%;
   background-color: black;
@@ -16,6 +23,7 @@
   /* This makes things *much* easier */
   box-sizing: border-box;
 }
+
 .homepage {
   display: flex !important;
   flex-direction: column !important;
@@ -28,4 +36,7 @@
 }
 .lang-btn:hover {
   border: 2px solid blue;
+}
+.langver-option {
+  margin-block: 5px;
 }

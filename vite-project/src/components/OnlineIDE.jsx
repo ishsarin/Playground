@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, version } from "react";
 import { Center, Wrap, WrapItem } from "@chakra-ui/react";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import { Heading } from "@chakra-ui/react";
 import { LangVersion } from "../API/LangVersion";
 const OnlineIDE = () => {
   const { setLang } = useContext(LangContext);
+  const { setVersion } = useContext(LangContext);
 
   const navigate = useNavigate();
   const [language, setLanguage] = useState([{}]);
@@ -20,9 +21,10 @@ const OnlineIDE = () => {
     fetchLangVersion();
   }, []);
 
-  const handleIDELangClick = (e, lang) => {
+  const handleIDELangClick = (e, lang, ver) => {
     // console.log(e.target.value);
     setLang(lang);
+    setVersion(ver);
     const path = "/code_editor";
     navigate(path);
   };
@@ -47,8 +49,10 @@ const OnlineIDE = () => {
           {language.map((lang, index) => (
             <Button
               className="lang-btn"
-              onClick={(e) => handleIDELangClick(e, lang.language)}
-              // colorScheme="white"
+              onClick={(e) =>
+                handleIDELangClick(e, lang.language, lang.version)
+              }
+              colorScheme="green"
               value="JavaScript"
               key={index}
             >
