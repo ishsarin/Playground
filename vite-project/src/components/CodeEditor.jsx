@@ -13,13 +13,14 @@ const CodeEditor = () => {
   const [output, setOutput] = useState("");
   const [language, setLanguage] = useState([{}]);
 
-  const [langver, setLangVer] = useState({
-    // lang: "",
-    // ver: "",
-  });
-
   const editorRef = useRef();
   const { lang } = useContext(LangContext);
+  const { version } = useContext(LangContext);
+
+  const [langver, setLangVer] = useState({
+    lang: lang,
+    ver: version,
+  });
 
   const handleEventDidMount = (editor) => {
     editorRef.current = editor;
@@ -56,7 +57,7 @@ const CodeEditor = () => {
   return (
     <>
       <Center>
-        <Button colorScheme="whatsapp" onClick={handleCodeSubmit}>
+        <Button colorScheme="whatsapp" width={100} onClick={handleCodeSubmit}>
           Run
         </Button>
       </Center>
@@ -67,10 +68,13 @@ const CodeEditor = () => {
           defaultValue={lang}
           onChange={handleLangVersionSelected}
         >
-          <option value="">{lang}</option>
+          <option value="">
+            {lang} {version}
+          </option>
 
           {language.map((lang, index) => (
             <option
+              className="langver-option"
               value={JSON.stringify({ lang: lang.language, ver: lang.version })}
               key={index}
             >
