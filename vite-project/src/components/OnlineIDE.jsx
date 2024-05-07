@@ -32,7 +32,7 @@ const OnlineIDE = () => {
   return (
     <div className="homepage">
       <Heading size="4xl" py={4}>
-        Welcome to Code Ground
+        Welcome to Plaground
       </Heading>
       <Heading size="xl" py={4}>
         Select the Language you want to code in!
